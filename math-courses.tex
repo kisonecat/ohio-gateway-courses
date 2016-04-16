@@ -1,0 +1,515 @@
+\documentclass[13pt]{beamer}
+\usepackage{omi-template}
+\usepackage{hyperref}
+
+\usepackage{calc}
+\newlength{\myscalewidth}
+\newcommand{\scaletowidth}[2]{%
+\setlength{\myscalewidth}{\widthof{#2}}%
+\pgfmathsetmacro{\myscaleratio}{#1/\myscalewidth}%
+\scalebox{\myscaleratio}{#2}}
+
+\makeatletter
+\define@key{beamerframe}{nofills}[true]{% top
+  \beamer@frametopskip=0pt\relax%
+  \beamer@framebottomskip=0pt\relax%
+  \beamer@frametopskipautobreak=\beamer@frametopskip\relax%
+  \beamer@framebottomskipautobreak=\beamer@framebottomskip\relax%
+  \def\beamer@initfirstlineunskip{%
+    \def\beamer@firstlineitemizeunskip{%
+      \vskip-\partopsep\vskip-\topsep\vskip-\parskip%
+      \global\let\beamer@firstlineitemizeunskip=\relax}%
+    \everypar{\global\let\beamer@firstlineitemizeunskip=\relax}}
+}
+\makeatother
+
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadings}
+\usetikzlibrary{arrows, decorations.markings}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{positioning,fadings,through}
+
+\newcounter{a}
+\newcounter{b}
+
+\newcommand{\slice}[5]{
+  \pgfmathparse{0.5*#1+0.5*#2}
+  \let\midangle\pgfmathresult
+
+  % slice
+  \draw[thick,fill=#5] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
+
+  % outer label
+  %\node[label=\midangle:#4] at (\midangle:0.5) {};
+
+  % inner label
+  \pgfmathparse{min((#2-#1-10)/110*(-0.3),0)}
+  \let\temp\pgfmathresult
+  \pgfmathparse{max(\temp,-0.5) + 0.8}
+  \let\innerpos\pgfmathresult
+  \node at (\midangle:\innerpos) {\parbox{1in}{\begin{center}#3 \\ \scriptsize #4\end{center}}};
+}
+
+\tikzfading[name=fade right,
+  left color=transparent!0, right color=transparent!100]
+\tikzfading[name=fade left,
+  right color=transparent!0, left color=transparent!100]
+\tikzfading[name=fade down,
+  bottom color=transparent!0, top color=transparent!100]
+\tikzfading[name=fade up,
+  top color=transparent!0, bottom color=transparent!100]
+
+\def\shadowradius{-10pt}
+\definecolor{innercolor}{rgb}{1,1,1}
+\newcommand\drawshadowbis[1]{
+  \begin{pgfonlayer}{shadow}
+    \fill[fill=white,path fading=fade up] ($(#1.south west)+((0,\shadowradius)$) rectangle ($(#1.south east)$);
+
+    \fill[fill=white,path fading=fade right] ($(#1.south east)$) rectangle ($(#1.north east)+((\shadowradius,0)$);
+
+    \fill[fill=white,path fading=fade down] ($(#1.north west)$) rectangle ($(#1.north east)+((0,-\shadowradius)$);
+
+    \fill[fill=white,path fading=fade left] ($(#1.south west)$) rectangle ($(#1.north west)+(-\shadowradius,0)$);
+  \end{pgfonlayer}
+}
+%
+\pgfdeclarelayer{shadow}
+\pgfsetlayers{main,shadow}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[nofills]
+
+  \vfill
+
+  \scaletowidth{\textwidth}{\textbf{Ohio's Gateway Mathematics Courses}}
+
+  \begin{center}
+    \textit{Bridges to Success Workshop} \\
+  April 20 and April 21, 2016
+  \end{center}
+
+  \vfill
+  \hrule
+
+  \color{dark}
+
+  \begin{center}
+    Communication, Outreach and Engagement Co-leads
+  \end{center}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      Jim Fowler \\
+      The Ohio State University \\
+      \texttt{fowler.291@osu.edu}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      Michelle Younker  \\
+      Owens Community College \\
+      \texttt{michelle\_younker@owens.edu} \\
+    \end{column}
+  \end{columns}
+
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Presentation Overview}
+
+  \begin{itemize}
+  \item The Ohio Mathematics Initiative
+  \item Steering Committee and recommendations
+  \item Data
+  \item Highlights of work to date
+  \item Ohio's gateway mathematics courses
+  \end{itemize}
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Where did the Ohio Mathematics Initiative start?}
+
+  \begin{itemize}
+  \item Call for change from institutions
+    \begin{itemize}
+      \item Concerns about success rates in mathematics courses
+      \item Concerns about transferability and innovation
+      \item Concerns about student success
+    \end{itemize}
+  \item Formalized at the Statewide Mathematics Summit, 
+    May 2013
+  \item Resulted in the formation of the Steering Committee,
+    July 2013
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Steering Committee Charge}
+  
+  To develop expectations and processes that result in each campus offering pathways that result in mathematics that yield:
+  \begin{enumerate}
+    \item increased success for students in the study of mathematics
+    \item a higher percentage of students completing degree     
+      programs
+    \item effective transferability of credits for students moving 
+      from one institution to another
+  \end{enumerate}
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Essential Components}
+
+  \begin{enumerate}
+    \item Develop high-quality entry-level courses and pathways
+    \item Develop transfer policies and processes that foster transfer and encourage innovation
+    \item Support constructive engagement of mathematics chairpersons and faculty
+    \item Collect, analyze, and share relevant data
+    \item Improve student success in college-level mathematics by aligning postsecondary expectations and high school practice
+  \end{enumerate}
+
+  asdflksdjfdkl
+
+  sfsdf
+
+  sfsdf
+
+  asdfsdf
+
+  asdfsdf
+
+  asdfsdf
+  
+BADBAD: Rethinking Postsecondary Mathematics:  Final Report of the Ohio Mathematics Steering Committee, March 2014. links to %https://ohiohighered.org/sites/ohiohighered.org/files/uploads/math/MATH-REPORT_FINAL_4.22.14.pdf
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  BADBAD:
+  
+  ``The status quo is unacceptable.''
+
+  A COMMON VISION for Undergraduate Mathematical Sciences Programs in 2025, Karen Saxe \& Linda Braddy, MAA, 2015.
+\end{frame}
+
+\begin{frame}
+  \frametitle{What do we know? \\ Too many entering first-years need remediation}
+
+\begin{tikzpicture}
+  \node [inner sep=0,text width=\textwidth,rectangle,rounded corners=0pt,fill=black] (box) {\includegraphics[clip,trim=0cm 17.2cm 0cm 4.1cm, width=\textwidth]{too-many-need-remediation.pdf}};
+\drawshadowbis{box}
+\end{tikzpicture}
+
+  If you're African-American, Hispanic, or a low-income student, \\
+  \quad you're more likely to be headed toward remediation.
+\end{frame}
+
+\begin{frame}
+  \frametitle{What do we know? \\ Very few make it to graduation day}
+
+  \includegraphics[clip,trim=0cm 18.6cm 0cm 3cm, width=\textwidth]{very-few-make-it-to-graduation.pdf}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{What do we know? \\ Very few make it to graduation day}
+
+  \includegraphics[clip,trim=0cm 7.8cm 0cm 13.5cm, width=\textwidth]{very-few-make-it-to-graduation.pdf}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Students who take College Algebra\ldots}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{center}
+\only<2->{\begin{tikzpicture}[scale=2.7]
+    \clip (-1.05,-1.05) rectangle (1.05,1.05);
+  \foreach \p/\t/\c in {10/Take Calc I\hspace{1em}\null/blue!25!white, 30/Take business calculus/green!25!white, 60/Do not take any calculus/red!25!white}
+  {
+    \setcounter{a}{\value{b}}
+    \addtocounter{b}{\p}
+    \slice{\thea/100*360}
+    {\theb/100*360}
+    {\p\%}{\t}{\c}
+  }
+\end{tikzpicture}}\only<1>{%
+\begin{tikzpicture}[scale=2.7]
+    \clip (-1.05,-1.05) rectangle (1.05,1.05);
+  \foreach \p/\t/\c in {10/Take Calc I\hspace{1em}\null/blue!25!white, 90/Do not take Calc I/red!25!white}
+  {
+    \setcounter{a}{\value{b}}
+    \addtocounter{b}{\p}
+    \slice{\thea/100*360}
+    {\theb/100*360}
+    {\p\%}{\t}{\c}
+  }
+  
+\end{tikzpicture}}
+\end{center}
+\end{column}
+\begin{column}{0.6\textwidth}
+\uncover<3->{Virtually no students who pass college algebra ever start Calculus III, \\\quad a key course for STEM majors.}
+\end{column}
+\end{columns}
+
+\parbox{4in}{\scriptsize\color{gray}Dunbar, S. 2005. Enrollment flow to and from courses below calculus . In A Fresh State for Collegiate mathematics: Rethinking the Courses below calculus, N.B. Hastings et al. (Eds.). Washington DC: MAA Notes, Mathematical Association of America.}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[nofills]
+  \vfill
+  \scaletowidth{\textwidth}{What are we doing?}
+  \vfill
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Some of the Work to Date}
+
+  \textbf{Increasing departmental flexibility regarding pre-requisites
+    \& credit hours}
+
+Removed the prescribed pre-requisite requirements from gateway courses
+for acceptance into the transfer module
+
+Endorsed late January/early February 2015
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Some of the Work to Date}
+
+  \textbf{Creating a college-level mathematics course definition}
+
+  \begin{quote}
+A credit-bearing, college-level course in Mathematics must use the standards required for high school graduation by the State of Ohio as a basis and must do at least one of the following:  1) broaden, or 2) deepen, or 3) extend the student’s learning.\end{quote}
+
+Endorsed late January/early February 2014
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Some of the Work to Date}
+  
+  \textbf{Redesigning Ohio Transfer Module (OTM) course criteria}
+
+Revised learning outcomes for College Algebra (TMM001) 
+
+% BADBAD: include links
+
+Revised learning outcomes for Introductory Statistics (TMM010)
+
+Introduced learning outcomes for Quantitative Literacy (TMM011)
+
+Endorsed Fall 2015
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Examples of Revisions from College Algebra}
+
+  Previous Outcomes
+
+Functions
+
+1.1 Represent functions verbally, numerically, graphically, and algebraically, including linear, quadratic, polynomial, rational, root/radical/power, exponential, logarithmic and piecewise-defined functions.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Examples of Revisions from College Algebra}
+
+  Revised Outcomes
+
+1. Functions: Successful College Algebra students demonstrate a deep understanding of functions whether they are described verbally, numerically, graphically, or algebraically (both explicitly and implicitly).  Students should be proficient working with the following families of functions:  linear, quadratic, higher-order polynomial, rational, exponential, logarithmic, radical, and piecewise-defined functions (including absolute value).    
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Examples of Revisions from College Algebra}
+
+  Revised Outcomes
+
+The successful College Algebra student can: 
+ 
+1a. Analyze functions.  Routine analysis includes discussion of domain, range, zeros, general function behavior (increasing, decreasing, extrema, etc.).  In addition to performing rote processes, the student can articulate reasons for choosing a particular process, recognize function families and anticipate behavior, and explain the implementation of a process (e.g., why certain real numbers are excluded from the domain of a given function).
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Some of the Work to Date}
+\textbf{Developing mathematics pathways}
+
+Aligned with specific groups of majors
+
+Comprised of challenging mathematics content relevant to the groups of majors
+
+Formalized Fall 2015
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{What is a math pathway?}
+
+  A mathematics pathway:
+\begin{itemize}
+  \item is a math course or sequence of courses taken by students (both college-ready and underprepared) to meet the requirements of their program of study;
+  \item allows students to actively engage with mathematical concepts, access prior knowledge, and reflect on new learning;
+  \item aligns with specific fields of study.
+\end{itemize}
+
+The New Mathways Project, Charles A. Dana Center , The University of Texas at Austin, 2015
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Ohio's Mathematics Pathways}
+
+  Developed in response to the recommendations of the Steering Committee to:
+
+  \begin{itemize}
+  \item develop high-quality entry-level courses and pathways
+  \item increase student success
+  \item make mathematics more relevant to all students
+  \item provide students with the appropriate mathematics to successfully support them in their chosen field of study
+  \end{itemize}
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Ohio's Mathematics Pathways}
+
+  Statistics Pathway % BADBAD
+
+  \begin{itemize}
+  \item College-level introductory statistics courses designed for students without a Calculus background and who do not require College Algebra or Calculus
+  \item Part of the general education requirement for majors in fields that may include the following:
+    \begin{itemize}
+      \item Nursing
+      \item Nutrition
+      \item Social Work
+      \item Associates in Business
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Ohio's Mathematics Pathways}
+    Quantitative Reasoning Pathway %BADbAD
+
+    \begin{itemize}
+    \item College-level courses designed to emphasize quantitative thinking and problem solving using quantitative methods
+    \item Part of the general education requirement for majors in the fields that may include the following:
+      \begin{itemize}
+      \item Communication
+      \item Criminal Justice
+      \item Fine arts
+      \item Education (Elementary, History, Social Studies, etc.)
+      \end{itemize}
+    \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Ohio's Mathematics Pathways}
+
+     STEM-Preparation Pathway % BADBAD
+
+     \begin{itemize}
+       \item College-level courses (i.e., College Algebra, Pre-Calculus, Trigonometry, Business Calculus, and/or Calculus) designed for students in mathematics-intensive majors
+       \item Part of the general education requirement for majors in the fields that may include the following:
+         \begin{itemize}
+           \item Business			
+           \item Chemistry
+           \item Education (Math, Science, Technology, etc.)
+           \item Engineering
+           \item Physics
+         \end{itemize}
+     \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[nofills]
+  \vfill
+  \scaletowidth{\textwidth}{Thank You!}
+  \vfill
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Contact Information \\ Communication, Outreach, \& Engagement Subgroup}
+
+  Jim Fowler, Co-lead \\
+  The Ohio State University \\
+  \texttt{fowler.291@osu.edu} \\
+  773.809.5659 
+
+  \vfill
+  
+    Michelle Younker, Co-lead  \\
+     Owens Community College \\
+     \texttt{michelle\_younker@owens.edu} \\
+     567.661.2640
+
+     \vfill
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Contact Information \\ Ohio Department of Higher Education}
+
+
+Dr. Paula Compton \\
+    Associate Vice Chancellor, Articulation and Transfer \\
+    \texttt{pcompton@highered.ohio.gov}
+
+    \vfill
+    
+Hideo Tsuchida \\
+    Director of Articulation and Transfer Policy \\
+    \texttt{htsuchida@highered.ohio.gov}
+
+    \vfill
+    
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[allowframebreaks]
+  \frametitle{Resources and References}
+Rethinking Postsecondary Mathematics: Final Report of the Ohio Mathematics Steering Committee; March 2014 \url{https://ohiohighered.org/sites/ohiohighered.org/files/uploads/math/MATH-REPORT_FINAL_4.22.14.pdf}
+
+Ohio Mathematics Initiative Website 
+\url{https://ohiohighered.org/mathematics-initiative-documents}
+
+OTM Guidelines/Learning Outcomes  \url{https://www.ohiohighered.org/transfer/transfermodule/learningoutcomes}
+
+Ohio Mathematics Initiative Newsletter, Fact Sheets, and Reading List    \url{https://www.ohiohighered.org/content/ohio_mathematics_initiative_resources}
+
+Ohio Mathematics Initiative Speaker Request Form  \url{https://www.ohiohighered.org/mathematics-initiative-resources/presenter-request}
+
+Complete College America Remediation Document  \url{http://www.completecollege.org/docs/Ohio_remediation.pdf}
+
+
+\end{frame}
+
+
+\end{document}
+

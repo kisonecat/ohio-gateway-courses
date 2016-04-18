@@ -60,23 +60,50 @@
   bottom color=transparent!0, top color=transparent!100]
 \tikzfading[name=fade up,
   top color=transparent!0, bottom color=transparent!100]
+\tikzfading[name=fade out,
+  inner color=transparent!0, outer color=transparent!100]
 
-\def\shadowradius{-10pt}
-\definecolor{innercolor}{rgb}{1,1,1}
+
+\def\shadowradius{0.05\textwidth}
+\def\zerodistance{1pt}
+%
 \newcommand\drawshadowbis[1]{
   \begin{pgfonlayer}{shadow}
-    \fill[fill=white,path fading=fade up] ($(#1.south west)+((0,\shadowradius)$) rectangle ($(#1.south east)$);
+    \fill[fill=white] ($(#1.south west)+(-\zerodistance,-\zerodistance)$) rectangle ($(#1.north east)+(\zerodistance,\zerodistance)$);
 
-    \fill[fill=white,path fading=fade right] ($(#1.south east)$) rectangle ($(#1.north east)+((\shadowradius,0)$);
+    \begin{scope}
+      \clip ($(#1.south west)$) rectangle ++(-\shadowradius,-\shadowradius);
+      \fill[fill=white,path fading=fade out]
+        ($(#1.south west)$) circle (\shadowradius);
+    \end{scope}
 
-    \fill[fill=white,path fading=fade down] ($(#1.north west)$) rectangle ($(#1.north east)+((0,-\shadowradius)$);
+    \begin{scope}
+      \clip ($(#1.south east)$) rectangle ++(\shadowradius,-\shadowradius);
+      \fill[fill=white,path fading=fade out]
+        ($(#1.south east)$) circle (\shadowradius);
+    \end{scope}
 
-    \fill[fill=white,path fading=fade left] ($(#1.south west)$) rectangle ($(#1.north west)+(-\shadowradius,0)$);
+    \begin{scope}
+      \clip ($(#1.north west)$) rectangle ++(-\shadowradius,\shadowradius);
+      \fill[fill=white,path fading=fade out]
+        ($(#1.north west)$) circle (\shadowradius);
+    \end{scope}
+
+    \begin{scope}
+      \clip ($(#1.north east)$) rectangle ++(\shadowradius,\shadowradius);
+      \fill[fill=white,path fading=fade out]
+        ($(#1.north east)$) circle (\shadowradius);
+    \end{scope}
+
+    \fill[path fading=fade up,fill=white] ($(#1.south west)+((0,-\shadowradius)$) rectangle ($(#1.south east)$);
+    \fill[path fading=fade right,fill=white] ($(#1.south east)$) rectangle ($(#1.north east)+((\shadowradius,0)$);
+    \fill[path fading=fade down,fill=white] ($(#1.north west)$) rectangle ($(#1.north east)+((0,\shadowradius)$);
+    \fill[path fading=fade left,fill=white] ($(#1.south west)$) rectangle ($(#1.north west)+(-\shadowradius,0)$);
   \end{pgfonlayer}
 }
-%
+
 \pgfdeclarelayer{shadow}
-\pgfsetlayers{main,shadow}
+\pgfsetlayers{shadow,main}
 
 \begin{document}
 
@@ -206,7 +233,7 @@ BADBAD: Rethinking Postsecondary Mathematics:  Final Report of the Ohio Mathemat
   \frametitle{What do we know? \\ Too many entering first-years need remediation}
 
 \begin{tikzpicture}
-  \node [inner sep=0,text width=\textwidth,rectangle,rounded corners=0pt,fill=black] (box) {\includegraphics[clip,trim=0cm 17.2cm 0cm 4.1cm, width=\textwidth]{too-many-need-remediation.pdf}};
+  \node [inner sep=0,text width=0.9\textwidth,rectangle,rounded corners=0pt,fill=white] (box) {\includegraphics[clip,trim=0cm 17.2cm 0cm 4.1cm, width=\textwidth]{too-many-need-remediation.pdf}};
 \drawshadowbis{box}
 \end{tikzpicture}
 
@@ -217,14 +244,24 @@ BADBAD: Rethinking Postsecondary Mathematics:  Final Report of the Ohio Mathemat
 \begin{frame}
   \frametitle{What do we know? \\ Very few make it to graduation day}
 
-  \includegraphics[clip,trim=0cm 18.6cm 0cm 3cm, width=\textwidth]{very-few-make-it-to-graduation.pdf}
+\begin{tikzpicture}
+  \node [inner sep=0,text width=0.9\textwidth,rectangle,rounded corners=0pt,fill=white] (box) {\includegraphics[clip,trim=0cm 18.6cm 0cm 3cm, width=\textwidth]{very-few-make-it-to-graduation.pdf}};
+\drawshadowbis{box}
+\end{tikzpicture}
+
+  
 \end{frame}
 
 
 \begin{frame}
   \frametitle{What do we know? \\ Very few make it to graduation day}
 
-  \includegraphics[clip,trim=0cm 7.8cm 0cm 13.5cm, width=\textwidth]{very-few-make-it-to-graduation.pdf}
+\begin{tikzpicture}
+  \node [inner sep=0,text width=0.9\textwidth,rectangle,rounded corners=0pt,fill=white] (box) {\includegraphics[clip,trim=0cm 7.8cm 0cm 13.5cm, width=\textwidth]{very-few-make-it-to-graduation.pdf}};
+\drawshadowbis{box}
+\end{tikzpicture}
+
+  
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -259,12 +296,13 @@ BADBAD: Rethinking Postsecondary Mathematics:  Final Report of the Ohio Mathemat
 \end{tikzpicture}}
 \end{center}
 \end{column}
-\begin{column}{0.6\textwidth}
-\uncover<3->{Virtually no students who pass college algebra ever start Calculus III, \\\quad a key course for STEM majors.}
+\begin{column}{0.4\textwidth}
+\uncover<3->{Virtually no students who pass college algebra ever start Calculus III, \\\quad a key course \\
+\quad\quad for STEM majors.}
 \end{column}
 \end{columns}
 
-\parbox{4in}{\scriptsize\color{gray}Dunbar, S. 2005. Enrollment flow to and from courses below calculus . In A Fresh State for Collegiate mathematics: Rethinking the Courses below calculus, N.B. Hastings et al. (Eds.). Washington DC: MAA Notes, Mathematical Association of America.}
+\parbox{\textwidth}{\scriptsize\color{gray}Dunbar, S. 2005. Enrollment flow to and from courses below calculus . In A Fresh State for Collegiate mathematics: Rethinking the Courses below calculus, N.B. Hastings et al. (Eds.). Washington DC: MAA Notes, Mathematical Association of America.}
 
 \end{frame}
 
